@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Monuments</string>
+
+    <string name="top_app_bar_home_title">Inicio</string>
+    <string name="top_app_bar_maps_title">Mapas</string>
+    <string name="top_app_bar_fav_title">Favoritos</string>
+
+    <string name="launcher_cover_content_description">Imagen de portada del launcher</string>
+
+    <string name="home_monument_main_image_content_description">Imagen del monumento</string>
+    <string name="home_monument_favorite_icon_content_description">Añadir a favoritos</string>
+
+    <string name="bottom_navigation_home_content_description">Inicio</string>
+    <string name="bottom_navitation_my_monuments_content_description">Mis monumentos</string>
+    <string name="bottom_navigation_favorites_content_description">Favoritos</string>
+</resources>
