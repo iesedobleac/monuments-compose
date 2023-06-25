@@ -24,7 +24,6 @@ fun MonumentEntity.toDomain() = Monument(
     isFavorite = isFavorite
 )
 
-
 fun MonumentDto.toDomain() =
     Monument(
         title = title,
