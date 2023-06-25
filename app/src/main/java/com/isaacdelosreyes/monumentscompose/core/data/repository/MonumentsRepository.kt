@@ -6,8 +6,10 @@ import com.isaacdelosreyes.monumentscompose.core.data.mapper.toEntity
 import com.isaacdelosreyes.monumentscompose.core.data.model.monument.Monument
 import com.isaacdelosreyes.monumentscompose.core.data.model.monument.MonumentsDto
 import com.isaacdelosreyes.monumentscompose.core.data.remote.retrofit.MonumentWs
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface MonumentsRepository {
@@ -42,20 +44,26 @@ class MonumentsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAllMonumentsFromRemote() =
-        monumentWs.getAllMonuments()
+        withContext(Dispatchers.IO) {
+            monumentWs.getAllMonuments()
+        }
 
     override suspend fun getAllMonumentsFromLocal() =
-        monumentsDao.getMonuments().map {
-            it.map { monumentEntity ->
-                monumentEntity.toDomain()
+        withContext(Dispatchers.IO) {
+            monumentsDao.getMonuments().map {
+                it.map { monumentEntity ->
+                    monumentEntity.toDomain()
+                }
             }
         }
+
 
     override suspend fun getAllFavoriteMonuments() =
-        monumentsDao.getFavoriteMonuments().map {
-            it.map { monumentEntity ->
-                monumentEntity.toDomain()
+        withContext(Dispatchers.IO) {
+            monumentsDao.getFavoriteMonuments().map {
+                it.map { monumentEntity ->
+                    monumentEntity.toDomain()
+                }
             }
         }
-
 }

@@ -7,6 +7,8 @@ import com.isaacdelosreyes.monumentscompose.core.data.model.monument.Monument
 import com.isaacdelosreyes.monumentscompose.favorites.domain.usecase.GetFavoriteMonumentsUseCase
 import com.isaacdelosreyes.monumentscompose.favorites.domain.usecase.InsertFavoriteMonumentUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -35,7 +37,7 @@ class FavoriteViewModel @Inject constructor(
     }
 
     fun setMonumentFavorite(monument: Monument) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             insertFavoriteMonumentToDatabaseUseCase(
                 monument.copy(isFavorite = !monument.isFavorite)
             )

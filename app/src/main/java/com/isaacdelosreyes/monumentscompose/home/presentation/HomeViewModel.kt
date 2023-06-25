@@ -31,26 +31,27 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun getMonumentsFromLocal() {
-        getMonumentsFromLocalUseCase().collectLatest {
-            monumentsState.value = monumentsState.value.copy(
-                monuments = it
-            )
+        viewModelScope.launch {
+            getMonumentsFromLocalUseCase().collectLatest {
+                monumentsState.value = monumentsState.value.copy(
+                    monuments = it
+                )
+            }
         }
     }
 
     private fun getMonuments() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             getMonumentsFromLocalUseCase().collectLatest { monuments ->
-                monuments.map { it }.takeIf { it.isNotEmpty() }?.apply {
+                monuments.takeIf { it.isNotEmpty() }?.apply {
                     monumentsState.value = monumentsState
                         .value.copy(
                             monuments = this
                         )
                 } ?: run {
-                    insertMonumentsUseCase(monuments =
-                    getMonumentsFromRemoteUseCase()
+                    val remoteMonuments = getMonumentsFromRemoteUseCase()
                         .monuments.map { it.toDomain() }
-                    )
+                    insertMonumentsUseCase(monuments = remoteMonuments)
                     getMonumentsFromLocal()
                 }
             }
@@ -62,7 +63,6 @@ class HomeViewModel @Inject constructor(
             insertFavoriteMonumentToDatabaseUseCase(
                 monument.copy(isFavorite = !monument.isFavorite)
             )
-            getMonumentsFromLocal()
         }
     }
 }

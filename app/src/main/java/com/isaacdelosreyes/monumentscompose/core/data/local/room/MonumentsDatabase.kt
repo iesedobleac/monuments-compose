@@ -7,7 +7,7 @@ import com.isaacdelosreyes.monumentscompose.core.data.local.converter.Coordinate
 import com.isaacdelosreyes.monumentscompose.core.data.local.entities.MonumentEntity
 
 @TypeConverters(CoordinatesTypeConverter::class)
-@Database(entities = [MonumentEntity::class], version = 1, exportSchema = false)
+@Database(entities = [MonumentEntity::class], version = 1)
 abstract class MonumentsDatabase: RoomDatabase() {
 
     abstract fun getMonumentsDao(): MonumentsDao
